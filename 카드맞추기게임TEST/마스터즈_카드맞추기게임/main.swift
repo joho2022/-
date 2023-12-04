@@ -124,11 +124,7 @@ func playCardMatching() {
         let selectedRow = row - 1
         let selectedColumn = column - 1
         
-//        guard let cardBoard[selectedRow][selectedColumn] > 0
-//        
-//        if cardBoard[selectedRow][selectedColumn] > 0 {
-//            isOpenCard[selectedRow][selectedColumn] = true
-//        }
+        
         isOpenCard[selectedRow][selectedColumn] = true
         selectedCard.append((selectedRow, selectedColumn))
         
@@ -140,7 +136,7 @@ func playCardMatching() {
                 let first = selectedCard[0]
                 let second = selectedCard[1]
                 
-                if cardBoard[first.0][first.1] == cardBoard[second.0][second.1] {
+                if cardBoard[first.0][first.1] == cardBoard[second.0][second.1] && cardBoard[first.0][first.1] > 0 {
                     count += 1
                     collectedCount += 2
                     isOpenCard[first.0][first.1] = true
@@ -162,7 +158,7 @@ func playCardMatching() {
                     
                     isOpenCard[first.0][first.1] = false
                     isOpenCard[second.0][second.1] = false
- 
+                    
                     
                     // 카드가 제거된 좌표와 오픈할려는 카드와 같이 고르면 제거된 카드 좌표에서 다시 X표시가 나타나는 문제를 해결
                     if cardBoard[first.0][first.1] == 0 && cardBoard[second.0][second.1] > 0 {
@@ -171,6 +167,10 @@ func playCardMatching() {
                     } else if cardBoard[first.0][first.1] > 0 && cardBoard[second.0][second.1] == 0 {
                         isOpenCard[second.0][second.1] = true
                         print("두 번째 카드는 이미 제거된 카드입니다. 턴이 넘어갑니다.")
+                    } else if cardBoard[first.0][first.1] == 0 && cardBoard[second.0][second.1] == 0 {
+                        isOpenCard[first.0][first.1] = true
+                        isOpenCard[second.0][second.1] = true
+                        print("이미 제거된 카드를 연속으로 입력하지 마세요. 턴이 넘어갑니다.")
                     }
                     
                     
@@ -179,8 +179,12 @@ func playCardMatching() {
                 }
                 
             } else {
+                
                 isOpenCard[selectedRow][selectedColumn] = false
-                print("[잘못된 입력] \n같은 좌표를 연속으로 입력하지 마세요\n")
+                print("[잘못된 입력] \n같은 좌표를 연속으로 입력하지 마세요. 턴이 넘어갑니다.")
+                
+                
+                currentPlayer == playerName1 ? (currentPlayer = playerName2) : (currentPlayer = playerName1)
             }
             selectedCard = [] //초기화
         }
